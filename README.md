@@ -322,12 +322,12 @@ FAQ
 **A:** Yes. As currently structured, all of these classes assume that
    your data is readily available in RAM. They will not work correctly,
    if your dataset is too big to fit into RAM.  At the time of this
-   writing, a single atom takes about 1.5KBytes or so, so a dataset
+   writing (2017), a single atom takes about 1.5KBytes or so, so a dataset
    consisting of 100M atoms will require about 150GBytes of RAM, plus
    a bit more for other processes (e.g. Postgres). Since most computers
    max out at about 256 GBytes RAM, this limits datasets to 100M atoms.
    Some language datasets can be considerably larger than this.
-   At this time, the largest Amazon EC2 instances are 256 GBytes.
+   At this time (2017), the largest Amazon EC2 instances are 256 GBytes.
 
 
 Generic Programming / Traits
