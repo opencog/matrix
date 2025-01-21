@@ -1,8 +1,51 @@
 
-Correlation/Covariance Matrix Analysis Tools
-============================================
-[See also: key ideas presentation](docs/AtomSpace.pdf).
+Graph Sparse Vector Library
+===========================
+[![CircleCI](https://circleci.com/gh/opencog/matrix.svg?style=svg)](https://circleci.com/gh/opencog/matrix)
 
+See: [Presentation slides of key ideas](opencog/matrix/docs/AtomSpace.pdf).
+
+Large complex graphs typically have many vertexes and edges that encode
+similar "objects", much like all of the rows of a database table are
+"similar". That collection of vertexes/edges can be thought of as
+forming a vector. Such a vector is sparse, in that it is built out of
+only some small fragment of the total graph. If the graph is big enough,
+there might be thousands (or millions) of such vectors, and then one is
+typically interested in doing conventional vector, matrix, tensor
+analysis on that collection of (sparse) vectors. This repo contains
+a library/toolset for performing this kind of analysis: correlation,
+covariance, mutual information, similarity measures of various kinds,
+and more.
+
+### Sparse and Dense Vectors
+These are *not DL/NN vectors*. The vectors and weight matrices that
+arise in deep learning neural nets (transformers, generative AI, etc.)
+are dense, not sparse. If a typical DL/NN vector is one-million-dimensional,
+then a dense vector will have all million basis coefficients be non-zero.
+A sparse vector will have all except a small number (say, a thousand) be
+zero.
+
+This has storage implications: if 99% of a vector is zero, you don't need
+to store those zeros! If 99% of a vector is zero, you don't need to pass
+it into your GPU's for processing, or send those zeros to some remote
+machine in a compute cluster.
+
+The [AtomSpace](https://github.com/opencog/atomspace) is a (hyper-)graph
+database, and, as such, is highly optimized for sparse vector storage.
+Thus, all the code here is in reference to the AtomSpce (and not some
+other graph database.)
+
+The code here is a library build from the ground-up. It does ***not***
+make use of pre-existing tools or libraries that can be found in R or
+SciPy. It would be nice if it was possible to use those systems: they
+are very popular, with many many users. Unfortunately, both of them
+choke on large vectors, and have no support for sparse vectors. If you
+ask SciPy to create a million-dimensional vector, you'll run out of RAM
+and then crash. The code in this directory routinely handles vectors of
+this size.
+
+Motivation
+----------
 In symbolic AI, there is a generic need to perform "reasoning" or
 "inference". There are more than a few ways this can be done. A
 traditional approach is "chaining", where one explores connected
