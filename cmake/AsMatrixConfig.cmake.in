@@ -1,0 +1,11 @@
+@PACKAGE_INIT@
+
+include("@CMAKE_INSTALL_PREFIX@/lib/cmake/AsMatrix/AsMatrixTargets.cmake")
+
+link_directories(
+	"@CMAKE_INSTALL_PREFIX@/lib/opencog/"
+)
+set(AS_MATRIX_DATA_DIR "@CMAKE_INSTALL_PREFIX@/share/opencog")
+set(AS_MATRIX_INCLUDE_DIR "@CMAKE_INSTALL_PREFIX@/include/")
+set(AS_MATRIX_VERSION "@SEMANTIC_VERSION@")
+set(AS_MATRIX_FOUND 1)
