@@ -1,5 +1,14 @@
 
 (use-modules (opencog) (opencog test-runner))
+
+; Unit test fails if run by hand, and this module is not
+; installed. So avoid that annoyance, and twinkle the module
+; load path.
+(if (resolve-module (list 'opencog 'matrix) #:ensure #f)
+	#t
+	(add-to-load-path "../../build/opencog/scm"))
+(format #t "Load path is: ~A\n" %load-path)
+
 (use-modules (opencog matrix))
 
 (opencog-test-runner)
