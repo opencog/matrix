@@ -125,7 +125,8 @@ functions, such as conditional probabilities, mutual information, and so
 on.
 
 A deeper abstraction of graphs, more suitable for complex reasoning,
-learning and inference tasks, can be found in the [sheaf](../sheaf)
+learning and inference tasks, can be found in the
+[sheaf](https://github.com/opencog/atomspace/blob/master/opencog/sheaf)
 directory, as well as the [learn](https://github.com/opencog/learn)
 github repo. Those systems are heavily reliant on the code here.
 
