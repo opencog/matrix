@@ -1,16 +1,16 @@
 
 # CMake boilerplate that allows users to do
-#    find_package(AtomspaceRocks REQUIRED 1.3.0)
+#    find_package(AsMatrix REQUIRED 2.0.0)
 # and have it work.
 
 include(CMakePackageConfigHelpers)
 
 set(ConfigPackageLocation lib/cmake/AsMatrix)
 
-install(EXPORT AsMatrixTargets
-	FILE AsMatrixTargets.cmake
-	DESTINATION ${ConfigPackageLocation}
-)
+#install(EXPORT AsMatrixTargets
+#	FILE AsMatrixTargets.cmake
+#	DESTINATION ${ConfigPackageLocation}
+#)
 
 SET(SEMANTIC_VERSION 2.0.0)
 

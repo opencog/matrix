@@ -1,6 +1,6 @@
 @PACKAGE_INIT@
 
-include("@CMAKE_INSTALL_PREFIX@/lib/cmake/AsMatrix/AsMatrixTargets.cmake")
+# include("@CMAKE_INSTALL_PREFIX@/lib/cmake/AsMatrix/AsMatrixTargets.cmake")
 
 link_directories(
 	"@CMAKE_INSTALL_PREFIX@/lib/opencog/"
