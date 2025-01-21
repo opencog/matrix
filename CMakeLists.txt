@@ -96,6 +96,17 @@ IF (NOT CXXTEST_FOUND)
 ENDIF (NOT CXXTEST_FOUND)
 
 # ----------------------------------------------------------
+# Needed for unit tests
+FIND_PACKAGE(AtomSpacePgres)
+IF (ATOMSPACE_PGRES_FOUND)
+	MESSAGE(STATUS "AtomSpace Postgres found.")
+	ADD_DEFINITIONS(-DHAVE_ATOMSPACE_PGRES)
+	SET(HAVE_ATOMSPACE_PGRES 1)
+ELSE (ATOMSPACE_PGRES_FOUND)
+	MESSAGE(STATUS "AtomSpace Postgres missing: needed for unit tests.")
+ENDIF (ATOMSPACE_PGRES_FOUND)
+
+# ----------------------------------------------------------
 # Is guile installed?
 
 include(OpenCogFindGuile)
@@ -225,6 +236,16 @@ FIND_PACKAGE(Doxygen)
 
 SUMMARY_ADD("Matrix" "AtomSpace Sparse Matrix Tools" HAVE_ATOMSPACE)
 SUMMARY_ADD("Doxygen"    "Code documentation" DOXYGEN_FOUND)
-SUMMARY_ADD("Unit tests" "Unit tests" CXXTEST_FOUND)
+
+# Argh. Print the right message
+IF (HAVE_ATOMSPACE_PGRES)
+	SUMMARY_ADD("Unit tests" "Unit tests" CXXTEST_FOUND)
+ELSE (HAVE_ATOMSPACE_PGRES)
+	IF (CXXTEST_FOUND)
+		SUMMARY_ADD("Unit tests" "Some but not all unit tests (atomspace-pgres missing)" CXXTEST_FOUND)
+	ELSE (CXXTEST_FOUND)
+		SUMMARY_ADD("Unit tests" "Unit tests" CXXTEST_FOUND)
+	ENDIF (CXXTEST_FOUND)
+ENDIF (HAVE_ATOMSPACE_PGRES)
 
 SUMMARY_SHOW()
