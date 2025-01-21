@@ -11,10 +11,9 @@ LINK_DIRECTORIES(
 )
 
 LINK_LIBRARIES(
-	atomspace
-	persist
-	persist-sql
-	smob
+	# persist-sql
+	${ATOMSPACE_LIBRARIES}
+	${COGUTIL_LIBRARY}
 )
 
 ADD_CXXTEST(VectorAPIUTest)
