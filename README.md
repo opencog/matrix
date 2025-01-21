@@ -10,12 +10,16 @@ similar "objects", much like all of the rows of a database table are
 "similar". That collection of vertexes/edges can be thought of as
 forming a vector. Such a vector is sparse, in that it is built out of
 only some small fragment of the total graph. If the graph is big enough,
-there might be thousands (or millions) of such vectors, and then one is
+there might be thousands (or millions) of such vectors. One is then
 typically interested in doing conventional vector, matrix, tensor
 analysis on that collection of (sparse) vectors. This repo contains
 a library/toolset for performing this kind of analysis: correlation,
-covariance, mutual information, similarity measures of various kinds,
-and more.
+covariance, mutual information, overlap, Hamming distance, similarity
+measures of various kinds, and more.
+
+In essence, large graphs have many similar sub-patterns and structures
+inside of them. This is a toolkit for discovering and working with such
+similar subgraphs.
 
 ### Sparse and Dense Vectors
 These are *not DL/NN vectors*. The vectors and weight matrices that
@@ -23,26 +27,54 @@ arise in deep learning neural nets (transformers, generative AI, etc.)
 are dense, not sparse. If a typical DL/NN vector is one-million-dimensional,
 then a dense vector will have all million basis coefficients be non-zero.
 A sparse vector will have all except a small number (say, a thousand) be
-zero.
+zero. So, if 1,000 of 1,000,000 entries are non-zero, this means that
+99.9% of the sparse vector is zero.
 
-This has storage implications: if 99% of a vector is zero, you don't need
-to store those zeros! If 99% of a vector is zero, you don't need to pass
-it into your GPU's for processing, or send those zeros to some remote
-machine in a compute cluster.
+This has all sorts of implications. If 99.9% of a vector is zero, you
+don't need to store those zeros! (Who wants to fill up their RAM and
+storage with 99.9% zeros???) If 99.9% of a vector is zero, you don't
+need to pass those parts to a GPU for processing. Or send those zeros
+to some remote machine in a compute cluster. Or even run a for-loop
+over them.
 
 The [AtomSpace](https://github.com/opencog/atomspace) is a (hyper-)graph
 database, and, as such, is highly optimized for sparse vector storage.
-Thus, all the code here is in reference to the AtomSpce (and not some
-other graph database.)
+Thus, all the code here explicitly designed for the AtomSpace (and not
+some other graph database.)
 
-The code here is a library build from the ground-up. It does ***not***
+The code here is a library built from the ground-up. It does ***not***
 make use of pre-existing tools or libraries that can be found in R or
-SciPy. It would be nice if it was possible to use those systems: they
+SciPy. It would be nice if it was possible to use those systems, as they
 are very popular, with many many users. Unfortunately, both of them
 choke on large vectors, and have no support for sparse vectors. If you
 ask SciPy to create a million-dimensional vector, you'll run out of RAM
 and then crash. The code in this directory routinely handles vectors of
 this size.
+
+### Results
+Some notes to get your juices flowing, and get an idea of what this is
+all about:
+
+* This library forms a central part of the Opencog
+  [Learn project](https://github.com/opencog/learn), where it is used to
+  extract structural similarities in natural language.
+
+* Some typical statistical results seen there resemble those of
+  traditional network analysis: vector lengths have a Zipfian
+  distribution, or sometimes a
+  [square-root Zipfian distribution](https://en.wikipedia.org/wiki/Wikipedia:Does_Wikipedia_traffic_obey_Zipf%27s_law%3F).
+  In such distributions, a handful of vectors are extremely long,
+  and almost all the rest are extremely short. This has been seen
+  in genetic, protein and reactome data (using this library) as
+  well as in natural language, and in Wikipedia reference pages
+  (using this library; see graph above).
+
+* When such vectors are classified according to pair-wise similarity,
+  they form a Gaussian Orthogonal Ensemble (GOE). This means that
+  traditional principles from physics and statistical mechanics can be
+  applied to them. Of course, the 2024 Nobel Prize was awarded for this
+  kind of work: but it is for *dense* vectors, as they appear in neural
+  nets. It turns out that such ideas hold for sparse vectors as well.
 
 Motivation
 ----------
