@@ -1,6 +1,6 @@
 
-Graph Sparse Vector Library
-===========================
+Graph Sparse Vector/Matrix Library
+==================================
 [![CircleCI](https://circleci.com/gh/opencog/matrix.svg?style=svg)](https://circleci.com/gh/opencog/matrix)
 
 See: [Presentation slides of key ideas](opencog/matrix/docs/AtomSpace.pdf).
