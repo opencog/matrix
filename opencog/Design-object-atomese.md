@@ -4,7 +4,14 @@ Design thoughts about an object-oriented infrastructure, in Atomese.
 nothing here yet, except for a sketch of ideas.
 
 The below sketchs ideas (circa 2024) for an object-oriented variant of
-Atomese.
+Atomese. It seems like it would not be hard to implement; it extends
+conventional Atomese in a minor way. Yet, it also feels insufficiently
+abstract. Over time, its become clear that the `ExecutionOutputLink` and
+`EvaluationLink` are problematic. They work, in the sense they were
+originally imagined to work, but they break up data flow in awkward
+ways. They provide the wrong kind of abstraction for a dataflow
+architecture. Thus, see [Design-similarity](Design-similarity.md)
+instead.
 
 Motivation
 ----------
@@ -47,7 +54,7 @@ The `DefinedMethodLink` isn't really needed; one could just use a
 `ListLink` and this would work just fine, today. But it's convenient to
 have a special link type devoted to this task.
 
-Invocation of the object-instance+method paure is "just like always", with
+Invocation of the object-instance+method pair is "just like always", with
 the [ExecutionOutputLink](https://wiki.opencog.org/w/ExecutionOutputLink):
 ```
 (cog-execute!
