@@ -5,9 +5,9 @@ Graph Sparse Vector/Matrix Library
 
 See: [Presentation slides of key ideas](opencog/matrix/docs/AtomSpace.pdf).
 
-Large complex graphs typically have many vertexes and edges that encode
+Large complex graphs typically have many vertices and edges that encode
 similar "objects", much like all of the rows of a database table are
-"similar". That collection of vertexes/edges can be thought of as
+"similar". That collection of vertices/edges can be thought of as
 forming a vector. Such a vector is sparse, in that it is built out of
 only some small fragment of the total graph. If the graph is big enough,
 there might be thousands (or millions) of such vectors. One is then
@@ -635,3 +635,12 @@ To-do list items.
    Currently, the `fetch` methods do this, and there is a scattering
    of other store methods provided in an ad hoc, as-needed basis. All
    this should be made prettier.
+
+Future Directions
+-----------------
+The API here does everything descirbed above. It works. It's stable.
+It's well-debugged and has been used for years in large compute efforts,
+burning through dozens (maybe hundreds?) of cpu-years of data mangling.
+It's mature. And, like any mature piece of software, we wish it did some
+things differently. Several files of alternative designs can be found in
+the design directory.

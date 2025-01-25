@@ -3,13 +3,13 @@ Design Notes - Objective Atomese
 Design thoughts about an object-oriented infrastructure, in Atomese.
 nothing here yet, except for a sketch of ideas.
 
-The below sketchs ideas (circa 2024) for an object-oriented variant of
+The below sketches ideas (circa 2024) for an object-oriented variant of
 Atomese. It seems like it would not be hard to implement; it extends
 conventional Atomese in a minor way. Yet, it also feels insufficiently
 abstract. Over time, its become clear that the `ExecutionOutputLink` and
 `EvaluationLink` are problematic. They work, in the sense they were
 originally imagined to work, but they break up data flow in awkward
-ways. They provide the wrong kind of abstraction for a dataflow
+ways. They provide the wrong kind of abstraction for an agentic
 architecture. Thus, see [Design-similarity](Design-similarity.md)
 instead.
 
@@ -111,7 +111,7 @@ methods:
 
 Example
 -------
-Lets asume the simplest case, where the matrix is in the form of the
+Lets assume the simplest case, where the matrix is in the form of the
 `EvaluationLink` shown above. One would then have:
 
 ```
