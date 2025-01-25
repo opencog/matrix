@@ -1,7 +1,10 @@
-Objective Atomese
-=================
-An object-oriented infrastructure, in Atomese.  Version 0.0.0; there is
+Design Notes - Objective Atomese
+================================
+Design thoughts about an object-oriented infrastructure, in Atomese.
 nothing here yet, except for a sketch of ideas.
+
+The below sketchs ideas (circa 2024) for an object-oriented variant of
+Atomese.
 
 Motivation
 ----------
@@ -88,7 +91,7 @@ the left and right elements given the triplet, and sometimes to construct
 the triplet, given the left and right elements. But how?
 
 In the scheme matrix code, each object has methods, such as
-`get-left-elemet` and `get-right-element` and so on, that will obtain the
+`get-left-element` and `get-right-element` and so on, that will obtain the
 needed item for the given matrix instance. To do the same thing in Atomese,
 we need to have a way of specifying method names, and using them.
 
