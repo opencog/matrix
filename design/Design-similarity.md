@@ -45,3 +45,11 @@ graph is "already there", in the AtomSpace; the edges are clearly
 marked, the embedding vectors are already implicit in the graph, and
 all that was needed was an API to work with these (sparse) vectors.
 Given a vector API, a cornucopia of similarity measures can be created.
+
+Conventional Atomese
+--------------------
+Conventional Atomese has C++ classes underneath many of most Atoms;
+those classes provide code that "does stuff". The
+[Design-object-atomese](Design-object-atomese.md) file describes a
+conventioal Atomese approach that can provide a conventional object
+oriented API for working with embedding vectors.
