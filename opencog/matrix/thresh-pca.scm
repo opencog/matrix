@@ -285,7 +285,7 @@
 		; --------------------
 		; XXX FIXME rewrite this to eliminate the use of 'right-element
 		; The problem is that not all objects can support 'right-element
-		; This is remedeied by using 'right-duals instead of 'right-stars
+		; This is remedied by using 'right-duals instead of 'right-stars
 		(define (do-left-unit PAIR)
 			(define cnt (LLOBJ GET-CNT PAIR))
 			(define len (get-left-length (LLOBJ 'right-element PAIR)))

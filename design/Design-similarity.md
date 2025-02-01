@@ -63,12 +63,14 @@ higher analysis layers could be stacked on top of. The base class
 consisted of these parts:
 
  1) Get the types of the left and right vertexes, and the edge.
+    (The `'left-type`, `'right-type` and `'pair-type` methods.)
  2) Given an edge, get the left and right vertexes.
+    (The `'left-element` and `'right-element` methods.)
  3) Given the matrix, get left and right wild-cards (marginals; edges
     with the left or right vertexes replaced by wild-cards).
  4) A list of all edges.
  5) Ability to get all edges from a StorageNode
- 6) Delete all edges (and the correspodning entries in a StorageNode)
+ 6) Delete all edges (and the corresponding entries in a StorageNode)
 
 This API is documented in `object-api.scm` and a concrete example
 appears in `edge-pairs.scm`. The file `object-api.scm` also defines
@@ -157,4 +159,67 @@ In that original matrix, the only rewrite was identical to the search
 pattern, thus a confusion about which is which.
 
 The rewrites provide an opportunity to specify exactly which marginals
-one is interested in. Thus, for example:
+one is interested in. Thus, for example, the original matrix, with
+wildcards, can be described as:
+```
+   (Query
+      (VariableList
+         (TypedVariable (Variable "$left") (Type 'Word))
+         (TypedVariable (Variable "$right") (Type 'Word)))
+      (Present
+         (Edge (Predicate "word-pair")
+            (List (Variable "$left") (Variable "$right"))))
+      (Edge (Predicate "word-pair")
+         (List (Variable "$left") (Variable "$right")))
+      (Edge (Predicate "word-pair")
+         (List (Any "left-wild") (Variable "$right")))
+      (Edge (Predicate "word-pair")
+         (List (Variable "$left") (Any "right-wild"))))
+```
+This has three rewrites: the diagonal, and the left and right marginals.
+This has several nice properties. One is that, if the diagonal is not
+required, then it can be omitted from the rewrites. This will save
+RAM associated with the query result cache, expecially if it is large.
+
+The down-size is the marginals aren't auto-generated. Lacking a specific
+use-case example, its hard to see what kind of solution could be
+provided. The generic case seems to work well.
+
+Item (2) could be done with a `FilterLink` plus `RuleLink` combo. For
+the word-pair matrix, the left-element axtractor would be
+```
+   (Filter
+      (Rule
+         (VariableList
+            (TypedVariable (Variable "$left") (Type 'Word))
+            (TypedVariable (Variable "$right") (Type 'Word)))
+         (Edge (Predicate "word-pair")
+            (List (Variable "$left") (Variable "$right")))
+         (Variable "$left"))
+      (List
+         (Edge (Predicate "word-pair")
+            (Word "some") (Word "thing"))))
+```
+Notable aspects to this structure:
+* The search pattern is specified with a `Rule` instead of a `Query`.
+  That's OK, given that Rule is a base class for Query. In practice,
+  its a bit confusing.
+* The `Rule` doesn't include the `PresentLink` (more generally, the
+  `AndLink`). But this is a historical design accident...
+* Should the `FilterLink` be amendeded to use the existing query-engine
+  infrastructure, but limit the search space to the input vector? Maybe,
+  but there seems to be little utility in this, since back-tracking will
+  never be required. Filtering is a lot easier than querying. So, no,
+  the query engine should not be used for filtering.
+* Filtering should be unit tested for correctness on `PresentLink`, etc.
+  in the search pattern. Not clear this is fully supported at this time!?
+ 
+Anyway, the above replaces item (2) with a generic rewrite, which is a
+good thing, I guess.
+
+Is Item (2) actually needed? Searching the code base, then answer seems
+to be "no". The method only shows up in implementations of derived
+clases. So I think this can be scratched.
+
+Item's (5) and (6) are already in the StorageNode API, although this API
+also needs to be converted to pure Atomese.
