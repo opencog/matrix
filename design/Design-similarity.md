@@ -81,9 +81,11 @@ that almost all otherlayers above need. These are:
     set. `{x | (x,y) exists in the atomspace for some y}`
  8) Size of the left and right basis
  9) True/false membership predicates: does an Atom appear in the left
-    or right basis set?
+    or right basis set? (These are provided by the `'in-left-basis?`
+    and `'in-right-basis?` methods.)
  10) List of the left and right duals to a given Atom. The left dual
-    for a given Atom Y is `{x | (x,Y) given fixed Y}`
+    for a given Atom Y is `{x | (x,Y) given fixed Y}` (This is provided
+    by the `'left-duals` and `'right-duals` methods.)
 
 The "problem" with this API is that it is implemented in scheme, and
 all of the data is stored in scheme structures. This is a fatal flaw,
@@ -223,3 +225,11 @@ clases. So I think this can be scratched.
 
 Item's (5) and (6) are already in the StorageNode API, although this API
 also needs to be converted to pure Atomese.
+
+Item (7): This is already cached in the query search results!
+
+Item (8): Use SizeOfLink
+
+Item (9): Does not appear to be used anywhere in the code.
+
+Item (10)
