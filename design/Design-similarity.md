@@ -119,4 +119,42 @@ Obviously, the above can be replaced by "any" query at all. The current
 rules seem to require explicit variable declarations, so that the types
 become visible for item (1).
 
-For item (3), 
+For item (3), the `'left-wildcard` method takes a single `ITEM` and
+returns
+```
+   (Edge (Predicate "word-pair")
+      (List (Any "left-wild") ITEM))
+```
+The obvious "solution" is to replace this with
+```
+   (Edge (Predicate "word-pair")
+      (List (Variable "$left") ITEM))
+```
+The preceeding questions need to be "is this really needed?" and "what
+is this used for?" The answer seems to be is that these are used for
+storing marginals, only.
+
+This then begs the question: "what do we want, for marginals"? Ther are
+several plausible answers. Consider the general tensor query:
+```
+   (Query
+       (VariableList VAR-1 VAR-2 ... VAR-N)
+       (AndLink PATTERN-TERM-1 PATTERN-TERM-2 ... PATTERN-TERM-K)
+       REWRITE-1
+       REWRITE-2
+       ...
+       REWRITE-M
+```
+One answer is to claim that one wants marginals for the search pattern,
+given by the `AndLink`. For N=2 variables, call them 'left' and 'right',
+there are only two marginals, obtained by plugging into search pattern.
+For larger N, there are N-factorial marginals.
+
+In this case, one asks "what's the point of the rewrites?". The answer
+here is that we actually want marginals on the rewrites, and not on the
+search pattern. For N=2 and M=1 we regain the original word-pair matrix.
+In that original matrix, the only rewrite was identical to the search
+pattern, thus a confusion about which is which.
+
+The rewrites provide an opportunity to specify exactly which marginals
+one is interested in. Thus, for example:
