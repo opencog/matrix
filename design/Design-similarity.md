@@ -46,8 +46,8 @@ marked, the embedding vectors are already implicit in the graph, and
 all that was needed was an API to work with these (sparse) vectors.
 Given a vector API, a cornucopia of similarity measures can be created.
 
-Queries as Tensors
-------------------
+Review of the existing API
+--------------------------
 The original matrix API was invented to work with word-pairs. Each word
 is a vertex; the edge between them forms a word-pair. Given a collection
 of edges, one could think of this as forming an adjacency matrix, with
@@ -62,10 +62,10 @@ called "parametric polymorphism", defining a base class API, that all
 higher analysis layers could be stacked on top of. The base class
 consisted of these parts:
 
- 1) Get the types of the left and reight vertexes, and the edge.
+ 1) Get the types of the left and right vertexes, and the edge.
  2) Given an edge, get the left and right vertexes.
- 3) Given the matrix, get left and right marginals (edges with the
-    left or right vertexes replaced by wild-cards).
+ 3) Given the matrix, get left and right wild-cards (marginals; edges
+    with the left or right vertexes replaced by wild-cards).
  4) A list of all edges.
  5) Ability to get all edges from a StorageNode
  6) Delete all edges (and the correspodning entries in a StorageNode)
@@ -83,3 +83,40 @@ that almost all otherlayers above need. These are:
  10) List of the left and right duals to a given Atom. The left dual
     for a given Atom Y is `{x | (x,Y) given fixed Y}`
 
+The "problem" with this API is that it is implemented in scheme, and
+all of the data is stored in scheme structures. This is a fatal flaw,
+and probmpts these re-design notes.
+
+Queries as Tensors
+------------------
+It appears that the original API can be completely replaced and
+generalized by using MeetLink, and generalized by using RuleLink and/or
+QueryLink. In retrospect, this is "obvious", and I'm quite mystified why
+I didn't do it this way from the beginning. Perhaps it just wasn't so
+obvious at first. Let's spell out the obvious.
+
+The current word-pair representation for the pair (some, thing) is:
+```
+   (Edge (Predicate "word-pair") (List (Word "some") (Word "thing")))
+```
+All such edges can be found by executing the query
+```
+   (Query
+      (VariableList
+         (TypedVariable (Variable "$left") (Type 'Word))
+         (TypedVariable (Variable "$right") (Type 'Word)))
+      (Present
+         (Edge (Predicate "word-pair")
+            (List (Variable "$left") (Variable "$right"))))
+      (Edge (Predicate "word-pair")
+         (List (Variable "$left") (Variable "$right"))))
+```
+Running this query provides item (4) above. The query results are cached
+on the query itself, using itself as the key. That is, `(cog-value q q)`
+will return the query results from the most recent execute of Query `q`.
+
+Obviously, the above can be replaced by "any" query at all. The current
+rules seem to require explicit variable declarations, so that the types
+become visible for item (1).
+
+For item (3), 
