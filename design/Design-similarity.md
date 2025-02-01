@@ -78,7 +78,8 @@ the `add-pair-stars` API, which, given the above, adds decorations
 that almost all otherlayers above need. These are:
 
  7) Lists of the left and right basis elements. The left basis is the
-    set. `{x | (x,y) exists in the atomspace for some y}`
+    set. `{x | (x,y) exists in the atomspace for some y}` (Provided by
+    the `'left-basis` and `'right-basis` methods.)
  8) Size of the left and right basis
  9) True/false membership predicates: does an Atom appear in the left
     or right basis set? (These are provided by the `'in-left-basis?`
@@ -232,4 +233,20 @@ Item (8): Use SizeOfLink
 
 Item (9): Does not appear to be used anywhere in the code.
 
-Item (10)
+Item (10): ... Almost unused; the `learn` code uses this in one place
+for set subtraction, and another place for agglomerative MI.
+
+### Conclusion
+Simply using the `QueryLink` and caching the rewrite results is
+sufficient for use to replace the parametric polymorphism base design.
+Nothing more needs to be done, here. (Except possibly more testing,
+and moving the search result keys to the rewrites from the query
+itself.)
+
+Compute processing
+------------------
+The matrix code has two parts: first, the specification of the base
+matrix, and second, the computation of the assorted similarity measures,
+given the base matrix.
+
+The above deals with the base. What about the similarities?
